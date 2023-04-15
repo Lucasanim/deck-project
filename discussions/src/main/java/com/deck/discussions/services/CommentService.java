@@ -11,5 +11,6 @@ public interface CommentService {
     Comment save(CommentDTO comment);
     Comment update(CommentDTO comment);
     void delete(Long id);
+    List<CommentDTO> getCommentsByDiscussionId(Long discussionId);
     void deleteByDiscussionId(Long discussionId);
 }

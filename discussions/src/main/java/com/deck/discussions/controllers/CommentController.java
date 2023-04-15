@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -63,6 +64,12 @@ public class CommentController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/get-from-discussion/{discussionId}")
+    public ResponseEntity<List<CommentDTO>> getCommentByDiscussionId(@PathVariable("discussionId") Long discussionId) {
+        List<CommentDTO> comments = commentService.getCommentsByDiscussionId(discussionId);
+        return ResponseEntity.ok(comments);
     }
 
 }

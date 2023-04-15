@@ -29,9 +29,9 @@ public class Comment {
     @ManyToOne
     private Discussion discussion;
 
-    private Date createdAt;
+    private Date createdAt = new Date();
 
-    private Date updatedAt;
+    private Date updatedAt = new Date();
 
     private Date deletedAt;
 

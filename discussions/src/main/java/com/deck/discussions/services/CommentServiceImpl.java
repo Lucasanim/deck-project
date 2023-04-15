@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -61,6 +62,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<CommentDTO> getCommentsByDiscussionId(Long discussionId) {
+        List<Comment> comments = repository.findByDiscussionId(discussionId);
+        return comments.stream().map(CommentDTO::from).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
     public void deleteByDiscussionId(Long discussionId) {
         List<Comment> comments = repository.findByDiscussionId(discussionId);
         comments.forEach(comment -> {
