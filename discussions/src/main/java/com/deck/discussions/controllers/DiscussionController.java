@@ -1,6 +1,8 @@
 package com.deck.discussions.controllers;
 
+import com.deck.discussions.dto.DiscussionDTO;
 import com.deck.discussions.models.Discussion;
+import com.deck.discussions.services.CommentService;
 import com.deck.discussions.services.DiscussionService;
 import com.deck.discussions.utils.validation.ValidationError;
 import org.springframework.http.HttpStatus;
@@ -16,38 +18,39 @@ import java.util.*;
 public class DiscussionController {
 
     private final DiscussionService discussionService;
+    private final CommentService commentService;
 
-    public DiscussionController(DiscussionService discussionService) {
+    public DiscussionController(DiscussionService discussionService, CommentService commentService) {
         this.discussionService = discussionService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/{discussionId}")
-    public ResponseEntity<Discussion> getDiscussionById(@PathVariable("discussionId") Long id) {
+    public ResponseEntity<DiscussionDTO> getDiscussionById(@PathVariable("discussionId") Long id) {
         Optional<Discussion> optionalDiscussion = this.discussionService.findById(id);
         if (optionalDiscussion.isPresent()) {
-            return ResponseEntity.ok(optionalDiscussion.get());
+            return ResponseEntity.ok(DiscussionDTO.from(optionalDiscussion.get()));
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> createDiscussion(@Valid @RequestBody Discussion discussion, BindingResult bindingResult) {
+    public ResponseEntity<?> createDiscussion(@Valid @RequestBody DiscussionDTO discussion, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ValidationError.getValidationErrorResponse(bindingResult);
         }
-        Discussion createdDiscussion = this.discussionService.save(discussion);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdDiscussion);
+        Discussion createdDiscussion = this.discussionService.saveNew(discussion);
+        return ResponseEntity.status(HttpStatus.CREATED).body(DiscussionDTO.from(createdDiscussion));
     }
 
     @PutMapping("/{discussionId}")
-    public ResponseEntity<?> updateDiscussion(@Valid @RequestBody Discussion discussion, BindingResult bindingResult, @PathVariable("discussionId") Long discussionId) {
+    public ResponseEntity<?> updateDiscussion(@Valid @RequestBody DiscussionDTO discussion, BindingResult bindingResult, @PathVariable("discussionId") Long discussionId) {
         if (bindingResult.hasErrors()) {
             return ValidationError.getValidationErrorResponse(bindingResult);
         }
         Optional<Discussion> optionalDiscussion = this.discussionService.findById(discussionId);
         if (optionalDiscussion.isPresent()) {
-            Discussion queriedDiscussion = optionalDiscussion.get();
-            return ResponseEntity.status(HttpStatus.CREATED).body(this.discussionService.update(queriedDiscussion));
+            return ResponseEntity.status(HttpStatus.CREATED).body(DiscussionDTO.from(discussionService.update(discussion)));
         }
         return ResponseEntity.notFound().build();
     }
@@ -56,7 +59,8 @@ public class DiscussionController {
     public ResponseEntity<?> deleteDiscussion(@PathVariable("discussionId") Long discussionId) {
         Optional<Discussion> optionalDiscussion = this.discussionService.findById(discussionId);
         if (optionalDiscussion.isPresent()) {
-            this.discussionService.delete(discussionId);
+            discussionService.delete(discussionId);
+            commentService.deleteByDiscussionId(discussionId);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();

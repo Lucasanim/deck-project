@@ -1,9 +1,7 @@
 package com.deck.discussions.models;
 
 import com.deck.discussions.dto.DiscussionDTO;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -16,6 +14,8 @@ import java.util.List;
 @Table(name = "discussion")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Discussion {
     @Id
@@ -31,7 +31,7 @@ public class Discussion {
     @NotEmpty
     private String body;
 
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     private Date createdAt = new Date();

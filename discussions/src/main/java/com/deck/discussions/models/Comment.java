@@ -1,9 +1,7 @@
 package com.deck.discussions.models;
 
 import com.deck.discussions.dto.CommentDTO;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -14,6 +12,8 @@ import java.util.Date;
 @Table(name = "comment")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Comment {
     @Id

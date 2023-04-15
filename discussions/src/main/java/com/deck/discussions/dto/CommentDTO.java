@@ -1,19 +1,24 @@
 package com.deck.discussions.dto;
 
 import com.deck.discussions.models.Comment;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class CommentDTO {
     private Long id;
+    @NotNull
     private Long creatorId;
+    @NotEmpty
     private String body;
+    @NotNull
     private Long discussionId;
     private Date createdAt;
     private Date updatedAt;

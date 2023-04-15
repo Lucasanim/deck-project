@@ -2,9 +2,7 @@ package com.deck.discussions.dto;
 
 import com.deck.discussions.models.Comment;
 import com.deck.discussions.models.Discussion;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
@@ -15,10 +13,15 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DiscussionDTO {
     private Long id;
+    @NotNull
     private Long creatorId;
+    @NotEmpty
     private String title;
+    @NotEmpty
     private String body;
     private Date createdAt = new Date();
     private Date updatedAt = new Date();

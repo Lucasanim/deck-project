@@ -1,10 +1,12 @@
 package com.deck.discussions.services;
 
+import com.deck.discussions.dto.DiscussionDTO;
 import com.deck.discussions.models.Discussion;
 import com.deck.discussions.repositories.DiscussionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -50,10 +52,17 @@ public class DiscussionServiceImpl implements DiscussionService {
 
     @Override
     @Transactional
-    public Discussion update(Discussion discussion) {
-        discussion.setUpdatedAt(new Date());
+    public Discussion saveNew(DiscussionDTO discussionDTO) {
+        return repository.save(Discussion.from(discussionDTO, new ArrayList<>()));
+    }
 
-        return save(discussion);
+    @Override
+    @Transactional
+    public Discussion update(DiscussionDTO discussionDTO) {
+        discussionDTO.setUpdatedAt(new Date());
+        Discussion discussion = repository.findById(discussionDTO.getId()).orElseThrow();
+
+        return save(Discussion.from(discussionDTO, discussion.getComments()));
     }
 
     @Override
