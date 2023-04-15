@@ -1,62 +1,39 @@
-package com.deck.discussions.models;
+package com.deck.discussions.dto;
 
-import com.deck.discussions.dto.DiscussionDTO;
+import com.deck.discussions.models.Comment;
+import com.deck.discussions.models.Discussion;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "discussion")
 @Getter
 @Setter
 @Builder
-public class Discussion {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class DiscussionDTO {
     private Long id;
-
-    @NotNull
     private Long creatorId;
-
-    @NotEmpty
     private String title;
-
-    @NotEmpty
     private String body;
-
-    @OneToMany(orphanRemoval = true)
-    private List<Comment> comments;
-
     private Date createdAt = new Date();
-
     private Date updatedAt = new Date();
-
     private Date deletedAt;
 
-    public void addComment(Comment comment) {
-        if (comments == null) {
-            comments = new ArrayList<>();
-        }
-        comments.add(comment);
-    }
-
-    public static Discussion from(DiscussionDTO discussion, List<Comment> comments) {
-        return Discussion.builder()
+    public static DiscussionDTO from(Discussion discussion) {
+        return DiscussionDTO.builder()
                 .id(discussion.getId())
                 .creatorId(discussion.getCreatorId())
                 .title(discussion.getTitle())
                 .body(discussion.getBody())
-                .comments(comments)
                 .createdAt(discussion.getCreatedAt())
                 .updatedAt(discussion.getUpdatedAt())
                 .deletedAt(discussion.getDeletedAt())
                 .build();
     }
+
 }

@@ -2,6 +2,7 @@ package com.deck.discussions.controllers;
 
 import com.deck.discussions.models.Discussion;
 import com.deck.discussions.services.DiscussionService;
+import com.deck.discussions.utils.validation.ValidationError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -11,6 +12,7 @@ import javax.validation.Valid;
 import java.util.*;
 
 @RestController
+@RequestMapping("/discussion")
 public class DiscussionController {
 
     private final DiscussionService discussionService;
@@ -31,7 +33,7 @@ public class DiscussionController {
     @PostMapping
     public ResponseEntity<?> createDiscussion(@Valid @RequestBody Discussion discussion, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return this.getValidationErrorResponse(bindingResult);
+            return ValidationError.getValidationErrorResponse(bindingResult);
         }
         Discussion createdDiscussion = this.discussionService.save(discussion);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDiscussion);
@@ -40,7 +42,7 @@ public class DiscussionController {
     @PutMapping("/{discussionId}")
     public ResponseEntity<?> updateDiscussion(@Valid @RequestBody Discussion discussion, BindingResult bindingResult, @PathVariable("discussionId") Long discussionId) {
         if (bindingResult.hasErrors()) {
-            return this.getValidationErrorResponse(bindingResult);
+            return ValidationError.getValidationErrorResponse(bindingResult);
         }
         Optional<Discussion> optionalDiscussion = this.discussionService.findById(discussionId);
         if (optionalDiscussion.isPresent()) {
@@ -58,12 +60,6 @@ public class DiscussionController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
-    }
-
-    private ResponseEntity<Map<String, String>> getValidationErrorResponse(BindingResult bindingResult) {
-        Map<String, String> errors = new HashMap<>();
-        bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-        return ResponseEntity.badRequest().body(errors);
     }
 
 }

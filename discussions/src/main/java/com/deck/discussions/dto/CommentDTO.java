@@ -1,46 +1,30 @@
-package com.deck.discussions.models;
+package com.deck.discussions.dto;
 
-import com.deck.discussions.dto.CommentDTO;
+import com.deck.discussions.models.Comment;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-@Entity
-@Table(name = "comment")
 @Getter
 @Setter
 @Builder
-public class Comment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CommentDTO {
     private Long id;
-
-    @NotNull
     private Long creatorId;
-
-    @NotEmpty
     private String body;
-
-    @ManyToOne
-    private Discussion discussion;
-
+    private Long discussionId;
     private Date createdAt;
-
     private Date updatedAt;
-
     private Date deletedAt;
 
-    public static Comment from(CommentDTO comment, Discussion discussion) {
-        return Comment.builder()
+    public static CommentDTO from(Comment comment) {
+        return CommentDTO.builder()
                 .id(comment.getId())
                 .body(comment.getBody())
                 .creatorId(comment.getCreatorId())
-                .discussion(discussion)
+                .discussionId(comment.getDiscussion().getId())
                 .createdAt(comment.getCreatedAt())
                 .updatedAt(comment.getUpdatedAt())
                 .deletedAt(comment.getDeletedAt())
