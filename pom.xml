@@ -21,6 +21,8 @@
         <module>users</module>
         <module>discussions</module>
         <module>auth</module>
+        <module>gateway</module>
+        <module>eureka-server</module>
     </modules>
 
     <packaging>pom</packaging>

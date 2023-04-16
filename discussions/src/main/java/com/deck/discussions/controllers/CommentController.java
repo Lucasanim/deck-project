@@ -2,7 +2,6 @@ package com.deck.discussions.controllers;
 
 import com.deck.discussions.dto.CommentDTO;
 import com.deck.discussions.models.Comment;
-import com.deck.discussions.models.Discussion;
 import com.deck.discussions.services.CommentService;
 import com.deck.discussions.utils.validation.ValidationError;
 import org.springframework.http.HttpStatus;
@@ -11,9 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController()
