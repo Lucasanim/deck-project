@@ -9,13 +9,13 @@ spring:
         - id: users
           uri: lb://users
           predicates:
-            - Path=/api/**
+            - Path=/api/users/**
           filters:
             - StripPrefix=2
         - id: discussions
           uri: lb://discussions
           predicates:
-            - Path=/api/**
+            - Path=/api/discussions/**
           filters:
             - StripPrefix=2
         - id: registry
