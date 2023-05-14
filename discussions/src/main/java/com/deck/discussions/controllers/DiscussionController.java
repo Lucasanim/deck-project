@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/discussion")
 public class DiscussionController {
 
@@ -23,6 +25,12 @@ public class DiscussionController {
     public DiscussionController(DiscussionService discussionService, CommentService commentService) {
         this.discussionService = discussionService;
         this.commentService = commentService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<DiscussionDTO>> getDiscussions() {
+        List<Discussion> discussions = this.discussionService.findAll();
+        return ResponseEntity.ok(discussions.stream().map(DiscussionDTO::from).collect(Collectors.toList()));
     }
 
     @GetMapping("/{discussionId}")
