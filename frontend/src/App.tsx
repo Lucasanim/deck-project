@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import React from 'react'
+import DiscussionList from './components/discussions/DiscussionList.tsx'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App: React.FC = () => {
   return (
     <div className="App">
+      <DiscussionList />
     </div>
   )
 }
