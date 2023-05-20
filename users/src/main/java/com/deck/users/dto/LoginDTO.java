@@ -1,2 +1,13 @@
-package com.deck.users.dto;public class LoginDTO {
+package com.deck.users.dto;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class LoginDTO {
+    private String email;
+    private String password;
 }

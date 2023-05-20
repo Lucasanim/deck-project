@@ -1,11 +1,12 @@
 package com.deck.users.services;
 
 import com.deck.users.models.User;
+import org.springframework.security.provisioning.UserDetailsManager;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserService {
+public interface UserService extends UserDetailsManager {
     List<User> findAll();
     Optional<User> findById(Long id);
     Optional<User> findByEmail(String email);
