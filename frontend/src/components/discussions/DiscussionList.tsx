@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { fetchDiscussions } from "../../services/DiscussionsService";
+import { fetchDiscussions } from "../../services/discussions/DiscussionsService";
 import Discussion from "../../models/Discussion";
 
 const DiscussionList: React.FC = () => {

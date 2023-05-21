@@ -1,5 +1,4 @@
-import AxiosInstance from "../axios/axios"
-import Discussion from "../models/Discussion";
+import AxiosInstance from "../../axios/axios"
 
 const instance = AxiosInstance("/discussions");
 
