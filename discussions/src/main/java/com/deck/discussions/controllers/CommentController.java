@@ -24,7 +24,7 @@ public class CommentController {
     }
 
     @GetMapping("/{commentId}")
-    public ResponseEntity<CommentDTO> getCommentById(@PathVariable("commentId") Long id) {
+    public ResponseEntity<CommentDTO> getCommentById(@RequestHeader Long userId, @PathVariable("commentId") Long id) {
         Optional<Comment> optionalComment = commentService.findById(id);
         if (optionalComment.isPresent()) {
             return ResponseEntity.ok(CommentDTO.from(optionalComment.get()));
