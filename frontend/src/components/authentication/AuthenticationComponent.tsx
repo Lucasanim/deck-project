@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { Button, TextField, Grid, Container, Typography } from '@mui/material';
 import AuthDetails from '../../models/user/AuthDetails';
-import { login, register } from '../../services/authentication/AuthenticationService';
+import { registerRequest } from '../../services/authentication/AuthenticationService';
+import { login, register } from '../../redux/reducers/AuthReducer';
+import { useDispatch, useSelector } from 'react-redux';
 
 const AuthenticationComponent: React.FC = () => {
+    const dispatch = useDispatch();
+    const token = useSelector((state) => state.auth.token?.accessToken);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -49,9 +54,9 @@ const AuthenticationComponent: React.FC = () => {
       }
 
       if (isLogin) {
-        login(userData);
+        dispatch(login(userData));
       } else {
-        register(userData);
+        dispatch(register(userData))
       }
     };
   
@@ -69,7 +74,7 @@ const AuthenticationComponent: React.FC = () => {
         >
           <Grid item>
             <Typography variant="h4" component="h1" gutterBottom>
-                Deck
+                Deck {token ? token : "no token"}
             </Typography>
           </Grid>
           <Grid item style={{paddingLeft: 0}}>
@@ -106,8 +111,8 @@ const AuthenticationComponent: React.FC = () => {
               {
                 !isLogin && <TextField
                     label="Password Confirm"
-                    type="password confirm"
-                    value={password}
+                    type="password"
+                    value={passwordConfirm}
                     onChange={handlePasswordConfirmChange}
                     fullWidth
                     margin="normal"
@@ -122,7 +127,7 @@ const AuthenticationComponent: React.FC = () => {
                 </Grid>
                 <Grid item xs={6}>
                   <Button variant="text" color="secondary" onClick={() => setIsLogin(!isLogin)}>
-                    { isLogin ? "Already have an account?" : "Don't have an account?"}
+                    { !isLogin ? "Already have an account?" : "Don't have an account?"}
                   </Button>
                 </Grid>
               </Grid>

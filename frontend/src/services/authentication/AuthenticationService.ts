@@ -3,10 +3,10 @@ import AuthDetails from "../../models/user/AuthDetails";
 
 const instance = AxiosInstance("/users/auth");
 
-export const login = (credentials: AuthDetails) => {
+export const loginRequest = (credentials: AuthDetails) => {
     return instance.post("/login", credentials)
 }
 
-export const register = (userData: AuthDetails) => {
+export const registerRequest = (userData: AuthDetails) => {
     return instance.post("/register", userData)
 }
