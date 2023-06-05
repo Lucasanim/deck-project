@@ -49,7 +49,7 @@ public class AuthController {
         return ResponseEntity.ok(tokenGenerator.createToken(authentication));
     }
 
-    @PostMapping("/token")
+    @PostMapping("/refresh-token")
     public ResponseEntity refreshToken(@RequestBody TokenDTO tokenDTO) {
         Authentication authentication = jwtAuthenticationProvider.authenticate(new BearerTokenAuthenticationToken(tokenDTO.getRefreshToken()));
 

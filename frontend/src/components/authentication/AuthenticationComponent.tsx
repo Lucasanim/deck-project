@@ -4,10 +4,11 @@ import AuthDetails from '../../models/user/AuthDetails';
 import { registerRequest } from '../../services/authentication/AuthenticationService';
 import { login, register } from '../../redux/reducers/AuthReducer';
 import { useDispatch, useSelector } from 'react-redux';
+import { redirect, useNavigate } from 'react-router-dom';
 
 const AuthenticationComponent: React.FC = () => {
     const dispatch = useDispatch();
-    const token = useSelector((state) => state.auth.token?.accessToken);
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -54,10 +55,11 @@ const AuthenticationComponent: React.FC = () => {
       }
 
       if (isLogin) {
-        dispatch(login(userData));
+        await dispatch(login(userData));
       } else {
-        dispatch(register(userData))
+        await dispatch(register(userData))
       }
+      navigate("/discussions")
     };
   
     return (
@@ -74,7 +76,7 @@ const AuthenticationComponent: React.FC = () => {
         >
           <Grid item>
             <Typography variant="h4" component="h1" gutterBottom>
-                Deck {token ? token : "no token"}
+                Deck {isLogin ? "login" : "registration"}
             </Typography>
           </Grid>
           <Grid item style={{paddingLeft: 0}}>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { fetchDiscussions } from "../../services/discussions/DiscussionsService";
-import Discussion from "../../models/Discussion";
+import Discussion from "../../models/discussions/Discussion";
 
 const DiscussionList: React.FC = () => {
     const [discussions, setDiscussions] = useState<Discussion[]>([]);
@@ -20,8 +20,8 @@ const DiscussionList: React.FC = () => {
 
     return <div>
         {
-            discussions.map(discussion => (
-                <div>
+            discussions.map((discussion, index) => (
+                <div key={index}>
                     {discussion.body}
                 </div>
             ))

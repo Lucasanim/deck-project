@@ -1,6 +1,6 @@
-import AxiosInstance from "../../axios/axios"
+import { GenericClient } from "../genericClient/genericClient";
 
-const instance = AxiosInstance("/discussions");
+const instance = new GenericClient("/discussions");
 
 export const fetchDiscussions = () => {
     return instance.get("/discussion")

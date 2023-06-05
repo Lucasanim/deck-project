@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import AuthDetails from '../../models/user/AuthDetails';
-import { loginRequest, registerRequest } from '../../services/authentication/AuthenticationService';
+import { loginRequest, refreshTokenRequest, registerRequest } from '../../services/authentication/AuthenticationService';
 import Token from '../../models/user/Token';
 import User from '../../models/user/User';
+import { store } from '../store/Store';
 
 export interface AuthState {
   token: Token | null,
@@ -46,6 +47,33 @@ export const register =  (userData: AuthDetails) => {
     }
   }
 };
+
+export const refreshToken =  (tokenData: Token | null) => {
+  return async (dispatch) => {
+    try {
+      if (!tokenData) return dispatch(logoutSuccess())
+      const response = await refreshTokenRequest(tokenData);
+  
+      if (response.status != 200) {
+        throw new Error('Error trying to register user');
+      }
+  
+      return dispatch(loginSuccess(response.data));
+    } catch (error) {
+      return error;
+    }
+  }
+};
+
+export const logout =  () => {
+  return async (dispatch) => {
+    try {
+      return dispatch(logoutSuccess());
+    } catch (error) {
+      return error;
+    }
+  }
+};
   
 
 const authSlice = createSlice({
@@ -56,12 +84,12 @@ const authSlice = createSlice({
       state.token = action.payload;
       return state;
     },
-    logout: (state) => {
+    logoutSuccess: (state) => {
       return initialState;
     },
   },
 });
 
-export const { loginSuccess, logout } = authSlice.actions;
+export const { loginSuccess, logoutSuccess } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -48,6 +48,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .anyRequest().authenticated()
                 )
+                .csrf().disable()
+                .cors().disable()
                 .oauth2ResourceServer((oauth2) -> oauth2
                         .jwt((jwt) -> jwt.jwtAuthenticationConverter(jwtToUserConverter))
                         .authenticationEntryPoint((request, response, exception) -> {
