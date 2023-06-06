@@ -1,17 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import DiscussionList from "../components/discussions/DiscussionList";
-import App from "../App";
 import AuthenticationComponent from "../components/authentication/AuthenticationComponent";
 import ProtectedRoute from "../components/router/ProtectedRoute";
-
-const PrivateRouter = () => {
-  return (
-    <Routes>
-      <Route path="/app" element={<App />} />
-      <Route path="/discussions" element={<DiscussionList />} />
-    </Routes>
-  );
-};
+import PrivateRouter from "./PrivateRouter";
 
 const RootRouter = () => {
   return (

@@ -1,12 +1,17 @@
-import React from 'react'
-import './App.css'
+import React from "react";
+import "./App.css";
+import { BrowserRouter } from "react-router-dom";
+import NavBar from "./components/navBar/NavBar";
+import RootRouter from "./router/Router";
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      Hello
+      <BrowserRouter>
+        <RootRouter />
+      </BrowserRouter>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
