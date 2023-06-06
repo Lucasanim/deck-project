@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { Dispatch, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import AuthDetails from '../../models/user/AuthDetails';
 import { loginRequest, refreshTokenRequest, registerRequest } from '../../services/authentication/AuthenticationService';
 import Token from '../../models/user/Token';
@@ -17,7 +17,7 @@ const initialState: AuthState = {
 };
 
 export const login = (userData: AuthDetails) => {
-  return async (dispatch) => {
+  return async (dispatch: Dispatch) => {
     try {
       const response = await loginRequest(userData);
   
@@ -33,7 +33,7 @@ export const login = (userData: AuthDetails) => {
 };
 
 export const register =  (userData: AuthDetails) => {
-  return async (dispatch) => {
+  return async (dispatch: Dispatch) => {
     try {
       const response = await registerRequest(userData);
   
@@ -49,7 +49,7 @@ export const register =  (userData: AuthDetails) => {
 };
 
 export const refreshToken =  (tokenData: Token | null) => {
-  return async (dispatch) => {
+  return async (dispatch: Dispatch) => {
     try {
       if (!tokenData) return dispatch(logoutSuccess())
       const response = await refreshTokenRequest(tokenData);
@@ -66,7 +66,7 @@ export const refreshToken =  (tokenData: Token | null) => {
 };
 
 export const logout =  () => {
-  return async (dispatch) => {
+  return async (dispatch: Dispatch) => {
     try {
       return dispatch(logoutSuccess());
     } catch (error) {

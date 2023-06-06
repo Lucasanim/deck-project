@@ -22,7 +22,7 @@ export class GenericClient {
         try {
             response = await request(path, body);
         } catch(e) {
-            if (e instanceof AxiosError && e.status == 401) {
+            if (e instanceof AxiosError && e.response?.status == 401) {
                 try {
                     response = await this.retryRequest(request, path, body)
                 } catch(e) {
