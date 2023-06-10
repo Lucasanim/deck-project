@@ -61,13 +61,13 @@ const AuthenticationComponent: React.FC = () => {
     } else {
       await dispatch(register(userData));
     }
-    navigate("/discussions");
+    navigate("/app/home");
   };
 
   return (
     <Container
       maxWidth="sm"
-      style={{ height: "100%", display: "flex", alignItems: "center" }}
+      style={{ height: "100vh", display: "flex", alignItems: "center" }}
     >
       <Grid
         container

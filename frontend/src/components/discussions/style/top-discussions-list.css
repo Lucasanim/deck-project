@@ -1,0 +1,9 @@
+.top-discussions-list {
+    min-height: calc(100vh - 84px);
+    display: flex;
+    justify-content: center;
+}
+
+.top-discussions-list-container {
+    width: 60%
+}

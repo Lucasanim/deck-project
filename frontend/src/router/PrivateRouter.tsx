@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import DiscussionList from "../components/discussions/DiscussionList";
+import TopDiscussionsList from "../components/discussions/TopDiscussionsList";
 import NavBar from "../components/navBar/NavBar";
 
 const PrivateRouter = () => {
@@ -7,7 +7,7 @@ const PrivateRouter = () => {
     <>
       <NavBar />
       <Routes>
-        <Route path="/discussions" element={<DiscussionList />} />
+        <Route path="/home" element={<TopDiscussionsList />} />
       </Routes>
     </>
   );
