@@ -29,6 +29,7 @@ const ProfileMenu = () => {
         <AccountCircle />
       </IconButton>
       <Menu
+        style={{ top: "50px" }}
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: "top",
