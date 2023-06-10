@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 import AxiosInstance from "../../axios/axios";
 import { store } from "../../redux/store/Store";
 import { logout, refreshToken } from "../../redux/reducers/AuthReducer";
@@ -11,26 +11,29 @@ export class GenericClient {
         this.instance = AxiosInstance(subPath)
     }
 
+    /** Refresh the token and retry the request */
     private async retryRequest(request: Function, path: string, body?: object) {
         const tokenData = store.getState().auth?.token
-        store.dispatch(refreshToken(tokenData))
+        await store.dispatch(refreshToken(tokenData))
         return await request(path, body);
     }
 
+    /**
+     * Attempts to make a request to a protected route, if it receives a 401 response code
+     * refreshes the token and retries the request automatically
+     */
     private async withRetrialRequest(request: Function, path: string, body?: object) {
-        let response: AxiosResponse;
         try {
-            response = await request(path, body);
+            return await request(path, body);
         } catch(e) {
             if (e instanceof AxiosError && e.response?.status == 401) {
                 try {
-                    response = await this.retryRequest(request, path, body)
+                    return await this.retryRequest(request, path, body)
                 } catch(e) {
-                    store.dispatch(logout())
+                    await store.dispatch(logout())
                 }
             }
         }
-        return response;
     }
 
     get(path: string) {
