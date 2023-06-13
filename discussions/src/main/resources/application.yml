@@ -1,5 +1,10 @@
 jwt:
   issuer: "deck-project"
+deck:
+  gateway:
+    url: "http://localhost:8090/api"
+  users:
+    url: ${deck.gateway.url}/users
 access-token:
   private: "access-refresh-token-keys/access-token-private.key"
   public: "access-refresh-token-keys/access-token-public.key"

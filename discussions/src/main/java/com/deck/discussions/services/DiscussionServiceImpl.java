@@ -1,6 +1,9 @@
 package com.deck.discussions.services;
 
+import com.deck.discussions.client.UserClientRest;
 import com.deck.discussions.dto.DiscussionDTO;
+import com.deck.discussions.dto.DiscussionDetailDTO;
+import com.deck.discussions.dto.external.PublicUserDTO;
 import com.deck.discussions.models.Discussion;
 import com.deck.discussions.repositories.DiscussionRepository;
 import org.springframework.stereotype.Service;
@@ -15,9 +18,11 @@ import java.util.Optional;
 public class DiscussionServiceImpl implements DiscussionService {
 
     private final DiscussionRepository repository;
+    private final UserClientRest userClient;
 
-    public DiscussionServiceImpl(DiscussionRepository repository) {
+    public DiscussionServiceImpl(DiscussionRepository repository, UserClientRest userClient) {
         this.repository = repository;
+        this.userClient = userClient;
     }
 
     @Override
@@ -30,6 +35,17 @@ public class DiscussionServiceImpl implements DiscussionService {
     @Transactional(readOnly = true)
     public Optional<Discussion> findById(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<DiscussionDetailDTO> getDiscussionDetail(Long id, String authenticationHeader) {
+        Optional<Discussion> discussion = findById(id);
+        if (discussion.isEmpty()) return Optional.empty();
+        DiscussionDetailDTO discussionDetail = DiscussionDetailDTO.from(discussion.get());
+        PublicUserDTO userData = userClient.getUserById(authenticationHeader, discussionDetail.getCreatorId());
+        discussionDetail.setCreatorUserName(userData.getUsername());
+        return Optional.of(discussionDetail);
     }
 
     @Override

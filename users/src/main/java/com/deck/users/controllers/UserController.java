@@ -1,5 +1,6 @@
 package com.deck.users.controllers;
 
+import com.deck.users.dto.PublicUserDTO;
 import com.deck.users.models.User;
 import com.deck.users.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -20,12 +22,9 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@RequestHeader Long userId, @PathVariable("userId") Long id) {
+    public ResponseEntity<PublicUserDTO> getUserById(@PathVariable("userId") Long id) {
         Optional<User> optionalUser = this.userService.findById(id);
-        if (optionalUser.isPresent()) {
-            return ResponseEntity.ok(optionalUser.get());
-        }
-        return ResponseEntity.notFound().build();
+        return optionalUser.map(user -> ResponseEntity.ok(PublicUserDTO.from(user))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -69,8 +68,8 @@ public class UserController {
     }
 
     @GetMapping("/users-by-id")
-    public ResponseEntity<List<User>> getUsersByIds(@RequestParam List<Long> usersIds) {
-        return ResponseEntity.ok(this.userService.getUsersByIds(usersIds));
+    public ResponseEntity<List<PublicUserDTO>> getUsersByIds(@RequestParam List<Long> usersIds) {
+        return ResponseEntity.ok(this.userService.getUsersByIds(usersIds).stream().map(PublicUserDTO::from).collect(Collectors.toList()));
     }
     private ResponseEntity<Map<String, String>> getValidationErrorResponse(BindingResult bindingResult) {
         Map<String, String> errors = new HashMap<>();

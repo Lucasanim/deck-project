@@ -32,7 +32,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 interface Props {
   writerUserName: string;
-  creationDate: Date;
+  creationDate: Date | string;
   title: string;
   body: string;
   comments?: any;
@@ -59,11 +59,10 @@ const DiscussionDetail: React.FC<Props> = (props: Props) => {
           </IconButton>
         }
         title={props.writerUserName}
-        // subheader={"September 14, 2016"}
       />
       <CardHeader
         title={props.title}
-        subheader={props.creationDate.getDate()}
+        subheader={props.creationDate.toString()}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">

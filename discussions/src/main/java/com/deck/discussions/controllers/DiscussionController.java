@@ -1,6 +1,7 @@
 package com.deck.discussions.controllers;
 
 import com.deck.discussions.dto.DiscussionDTO;
+import com.deck.discussions.dto.DiscussionDetailDTO;
 import com.deck.discussions.models.Discussion;
 import com.deck.discussions.services.CommentService;
 import com.deck.discussions.services.DiscussionService;
@@ -33,12 +34,9 @@ public class DiscussionController {
     }
 
     @GetMapping("/{discussionId}")
-    public ResponseEntity<DiscussionDTO> getDiscussionById(@PathVariable("discussionId") Long id) {
-        Optional<Discussion> optionalDiscussion = this.discussionService.findById(id);
-        if (optionalDiscussion.isPresent()) {
-            return ResponseEntity.ok(DiscussionDTO.from(optionalDiscussion.get()));
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<DiscussionDetailDTO> getDiscussionById(@RequestHeader("Authorization") String accessToken, @PathVariable("discussionId") Long id) {
+        Optional<DiscussionDetailDTO> optionalDiscussion = this.discussionService.getDiscussionDetail(id, accessToken);
+        return optionalDiscussion.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
