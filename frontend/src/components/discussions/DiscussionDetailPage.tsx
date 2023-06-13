@@ -28,10 +28,7 @@ const DiscussionDetailPage: React.FC = () => {
         <CircularProgress />
       ) : (
         <DiscussionDetail
-          writerUserName={discussion.creatorUserName}
-          creationDate={new Date(discussion.createdAt)}
-          title={discussion.title}
-          body={discussion.body}
+          discussionDetail={discussion}
         />
       )}
     </div>

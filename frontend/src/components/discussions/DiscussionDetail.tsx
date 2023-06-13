@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
-import Card, { CardClasses } from "@mui/material/Card";
+import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
@@ -13,7 +13,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { PaperProps, SxProps } from "@mui/material";
+import DiscussionCommentSection from "./comments/DiscussionCommentSection";
+import DiscussionDetailModel from "../../models/discussions/DiscussionDetail";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -31,11 +32,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 interface Props {
-  writerUserName: string;
-  creationDate: Date | string;
-  title: string;
-  body: string;
-  comments?: any;
+  discussionDetail: DiscussionDetailModel
 }
 
 const DiscussionDetail: React.FC<Props> = (props: Props) => {
@@ -58,15 +55,15 @@ const DiscussionDetail: React.FC<Props> = (props: Props) => {
             <MoreVertIcon />
           </IconButton>
         }
-        title={props.writerUserName}
+        title={props.discussionDetail.creatorUserName}
       />
       <CardHeader
-        title={props.title}
-        subheader={props.creationDate.toString()}
+        title={props.discussionDetail.title}
+        subheader={props.discussionDetail.createdAt.toString()}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {props.body}
+          {props.discussionDetail.body}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -87,7 +84,7 @@ const DiscussionDetail: React.FC<Props> = (props: Props) => {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography>This is the content</Typography>
+          <DiscussionCommentSection discussionId={props.discussionDetail.id} />
         </CardContent>
       </Collapse>
     </Card>
