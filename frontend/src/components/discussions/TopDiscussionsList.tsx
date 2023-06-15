@@ -4,9 +4,11 @@ import Discussion from "../../models/discussions/Discussion";
 import GridList from "../GridList/GridList";
 import DiscussionCard from "./DiscussionCard";
 import "./style/top-discussions-list.css";
+import { useNavigate } from "react-router-dom";
 
 const TopDiscussionsList: React.FC = () => {
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
+  const navigate = useNavigate();
 
   const getDiscussions = async () => {
     try {
@@ -16,6 +18,10 @@ const TopDiscussionsList: React.FC = () => {
       console.log(e);
     }
   };
+
+  const handleDiscussionClick = (id: string | number) => {
+    navigate("/app/discussion/" + id);
+  }
 
   useEffect(() => {
     getDiscussions();
@@ -27,9 +33,11 @@ const TopDiscussionsList: React.FC = () => {
         <GridList
           elements={discussions.map((discussion, index) => (
             <DiscussionCard
+              onClick={handleDiscussionClick}
               key={index}
               title={discussion.title}
               body={discussion.body}
+              id={discussion.id}
             />
           ))}
         />

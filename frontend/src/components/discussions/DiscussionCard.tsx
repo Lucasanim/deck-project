@@ -9,11 +9,13 @@ const card = <React.Fragment></React.Fragment>;
 interface Props {
   title: string;
   body: string;
+  id: string | number;
+  onClick?: (id: string | number) => any;
 }
 
 const DiscussionCard: React.FC<Props> = (props: Props) => {
   return (
-    <Box sx={{ minWidth: 275 }}>
+    <Box sx={{ minWidth: 275 }} onClick={() => props.onClick && props.onClick(props.id)}>
       <Card variant="outlined" style={{ cursor: "pointer" }}>
         <CardContent>
           <Typography variant="h5" component="div">
