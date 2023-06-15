@@ -1,9 +1,13 @@
 package com.deck.discussions.controllers;
 
 import com.deck.discussions.dto.CommentDTO;
+import com.deck.discussions.dto.CommentDetailDTO;
 import com.deck.discussions.models.Comment;
 import com.deck.discussions.services.CommentService;
 import com.deck.discussions.utils.validation.ValidationError;
+import net.bytebuddy.implementation.bind.annotation.Default;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -64,9 +68,11 @@ public class CommentController {
     }
 
     @GetMapping("/get-from-discussion/{discussionId}")
-    public ResponseEntity<List<CommentDTO>> getCommentByDiscussionId(@PathVariable("discussionId") Long discussionId) {
-        List<CommentDTO> comments = commentService.getCommentsByDiscussionId(discussionId);
-        return ResponseEntity.ok(comments);
+    public ResponseEntity<List<CommentDetailDTO>> getCommentByDiscussionId(
+            @RequestHeader("Authorization") String accessToken, @PathVariable("discussionId") Long discussionId,
+            @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "0") int pageNumber) {
+        List<CommentDetailDTO> commentDetails = commentService.getCommentDetailsByDiscussionId(discussionId, accessToken, PageRequest.of(pageNumber, pageSize));
+        return ResponseEntity.ok(commentDetails);
     }
 
 }

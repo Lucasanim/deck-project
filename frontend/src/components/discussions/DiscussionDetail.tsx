@@ -47,7 +47,7 @@ const DiscussionDetail: React.FC<Props> = (props: Props) => {
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
+            {props.discussionDetail.creatorUserName[0]}
           </Avatar>
         }
         action={
@@ -62,7 +62,7 @@ const DiscussionDetail: React.FC<Props> = (props: Props) => {
         subheader={props.discussionDetail.createdAt.toString()}
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body1">
           {props.discussionDetail.body}
         </Typography>
       </CardContent>

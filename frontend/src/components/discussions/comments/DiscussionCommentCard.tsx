@@ -1,7 +1,12 @@
 import { Card, CardContent, Avatar, Typography } from "@mui/material";
 import { red } from "@mui/material/colors";
+import CommentDetail from "../../../models/discussions/CommentDetail";
 
-const DiscussionCommentCard = () => {
+interface Props {
+  commentDetails: CommentDetail
+}
+
+const DiscussionCommentCard: React.FC<Props> = (props: Props) => {
   return (
     <Card>
       <CardContent>
@@ -11,15 +16,14 @@ const DiscussionCommentCard = () => {
             sx={{ bgcolor: red[500] }}
             aria-label="recipe"
           >
-            R
+            {props.commentDetails.creatorUserName[0]}
           </Avatar>
           <div className="my-5 w-full mr-5">
+            <Typography variant="body2">
+              {props.commentDetails.body}
+            </Typography>
             <Typography variant="body2" color="text.secondary">
-              consectetur, neque doloribus, cupiditate numquam dignissimos
-              laborum fugiat deleniti? Eum quasi quidem quibusdam. body2. Lorem
-              ipsum dolor sit amet, consectetur adipisicing elit. Quos
-              blanditiis tenetur unde suscipit, quam beatae rerum inventore
-              consectetur, neque doloribus, cupiditate numquam dign
+              {props.commentDetails.createdAt?.toString()}
             </Typography>
           </div>
         </div>

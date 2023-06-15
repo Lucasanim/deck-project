@@ -67,8 +67,8 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/users-by-id")
-    public ResponseEntity<List<PublicUserDTO>> getUsersByIds(@RequestParam List<Long> usersIds) {
+    @PostMapping("/users-by-id")
+    public ResponseEntity<List<PublicUserDTO>> getUsersByIds(@RequestBody List<Long> usersIds) {
         return ResponseEntity.ok(this.userService.getUsersByIds(usersIds).stream().map(PublicUserDTO::from).collect(Collectors.toList()));
     }
     private ResponseEntity<Map<String, String>> getValidationErrorResponse(BindingResult bindingResult) {
