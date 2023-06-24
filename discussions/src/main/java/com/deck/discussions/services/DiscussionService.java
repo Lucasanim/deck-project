@@ -13,6 +13,7 @@ public interface DiscussionService {
     Optional<DiscussionDetailDTO> getDiscussionDetail(Long id, String authenticationHeader);
     List<Discussion> findByTitle(String title);
     List<Discussion> findByIds(Iterable<Long> ids);
+    List<Discussion> findByCreatorId(Long creatorId);
     Discussion save(Discussion discussion);
     Discussion saveNew(DiscussionDTO discussion);
     Discussion update(DiscussionDTO discussion);

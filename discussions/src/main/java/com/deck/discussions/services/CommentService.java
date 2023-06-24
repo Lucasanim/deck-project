@@ -14,5 +14,6 @@ public interface CommentService {
     Comment update(CommentDTO comment);
     void delete(Long id);
     List<CommentDetailDTO> getCommentDetailsByDiscussionId(Long discussionId, String authenticationHeader, Pageable pageable);
+    List<Comment> getCommentsByDiscussionId(Long discussionId, Pageable pageable);
     void deleteByDiscussionId(Long discussionId);
 }

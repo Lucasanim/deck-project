@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DiscussionRepository extends CrudRepository<Discussion, Long> {
     List<Discussion> findByTitle(String title);
+    List<Discussion> findByCreatorId(Long creatorId);
 }

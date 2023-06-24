@@ -61,6 +61,11 @@ public class DiscussionServiceImpl implements DiscussionService {
     }
 
     @Override
+    public List<Discussion> findByCreatorId(Long creatorId) {
+        return repository.findByCreatorId(creatorId);
+    }
+
+    @Override
     @Transactional
     public Discussion save(Discussion discussion) {
         return repository.save(discussion);

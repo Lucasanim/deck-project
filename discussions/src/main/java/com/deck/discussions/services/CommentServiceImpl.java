@@ -67,8 +67,14 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<Comment> getCommentsByDiscussionId(Long discussionId, Pageable pageable) {
+        return repository.findByDiscussionId(discussionId, pageable).getContent();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<CommentDetailDTO> getCommentDetailsByDiscussionId(Long discussionId, String authenticationHeader, Pageable pageable) {
-        List<Comment> comments = repository.findByDiscussionId(discussionId, pageable).getContent();
+        List<Comment> comments = getCommentsByDiscussionId(discussionId, pageable);
         if (comments.isEmpty()) return new ArrayList<>();
 
         Set<Long> creatorIds = comments.stream().map(Comment::getCreatorId).collect(Collectors.toSet());
