@@ -74,6 +74,8 @@ public class DiscussionServiceImpl implements DiscussionService {
     @Override
     @Transactional
     public Discussion saveNew(DiscussionDTO discussionDTO) {
+        discussionDTO.setCreatedAt(new Date());
+        discussionDTO.setUpdatedAt(new Date());
         return repository.save(Discussion.from(discussionDTO, new ArrayList<>()));
     }
 

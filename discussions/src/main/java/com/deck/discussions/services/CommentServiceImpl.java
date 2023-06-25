@@ -37,6 +37,8 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public Comment save(CommentDTO commentDTO) {
         Discussion discussion = discussionService.findById(commentDTO.getDiscussionId()).orElseThrow();
+        commentDTO.setCreatedAt(new Date());
+        commentDTO.setUpdatedAt(new Date());
         Comment comment = Comment.from(commentDTO, discussion);
         Comment savedComment = save(comment);
         discussion.addComment(savedComment);

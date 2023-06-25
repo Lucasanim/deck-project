@@ -8,6 +8,7 @@ import com.deck.discussions.utils.validation.ValidationError;
 import net.bytebuddy.implementation.bind.annotation.Default;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -71,7 +72,7 @@ public class CommentController {
     public ResponseEntity<List<CommentDetailDTO>> getCommentByDiscussionId(
             @RequestHeader("Authorization") String accessToken, @PathVariable("discussionId") Long discussionId,
             @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "0") int pageNumber) {
-        List<CommentDetailDTO> commentDetails = commentService.getCommentDetailsByDiscussionId(discussionId, accessToken, PageRequest.of(pageNumber, pageSize));
+        List<CommentDetailDTO> commentDetails = commentService.getCommentDetailsByDiscussionId(discussionId, accessToken, PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "createdAt"));
         return ResponseEntity.ok(commentDetails);
     }
 

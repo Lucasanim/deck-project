@@ -16,24 +16,28 @@ const DiscussionCommentSection: React.FC<Props> = (props: Props) => {
     try {
       const comments = await fetchCommentsByDiscussionId(props.discussionId);
       setComments(comments.data);
-    } catch(e) {
+    } catch (e) {}
+  };
 
-    }
-  }
+  const handleCreateComment = (newComment: CommentDetail) => {
+    setComments([newComment, ...comments]);
+  };
 
   useEffect(() => {
-    getComments()
-  }, [])
+    getComments();
+  }, []);
 
   return (
     <div>
-      <CreateCommentComponent />
+      <CreateCommentComponent
+        discussionId={props.discussionId}
+        onCreate={handleCreateComment}
+      />
       <Divider className="p-2" />
 
       {comments.map((comment, index) => (
         <>
           <DiscussionCommentCard commentDetails={comment} key={index} />
-          <Divider className="p-1" key={index} />
         </>
       ))}
     </div>

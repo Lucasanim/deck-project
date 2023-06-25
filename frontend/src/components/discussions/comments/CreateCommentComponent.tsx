@@ -7,24 +7,37 @@ import SendIcon from "@mui/icons-material/Send";
 import { Button, CardContent } from "@mui/material";
 import { createComment } from "../../../services/discussions/comments/CommentsService";
 import Comment from "../../../models/discussions/Comment";
+import { useSelector } from "react-redux";
+import User from "../../../models/user/User";
+import CommentDetail from "../../../models/discussions/CommentDetail";
 
 interface Props {
   discussionId: string | number;
+  onCreate?: (comment: CommentDetail) => void;
 }
 
 const CreateCommentComponent: React.FC<Props> = (props: Props) => {
   const MAX_TEXT_SIZE = 500;
   const [body, setBody] = React.useState("");
+  const user: User = useSelector((store) => store.auth.user);
 
-  const handleSend = async (event: React.ChangeEvent) => {
+  const handleSend = async (event: React.MouseEvent) => {
     event.preventDefault();
+    if (!user) {
+      throw new Error("User not found inside the store");
+    }
     const comment = {
-      creatorId: 0,
+      creatorId: user.id,
+      discussionId: props.discussionId,
+      creatorUserName: user.username,
       body: body,
       createdAt: new Date(),
     };
     try {
-      await createComment(comment as Comment);
+      await createComment(comment as unknown as Comment);
+      if (props.onCreate) {
+        props.onCreate(comment as unknown as CommentDetail);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -47,7 +60,7 @@ const CreateCommentComponent: React.FC<Props> = (props: Props) => {
             sx={{ bgcolor: red[500] }}
             aria-label="recipe"
           >
-            R
+            {user?.username[0] || ""}
           </Avatar>
           <div className="my-5 w-full mr-5">
             <TextField
@@ -64,7 +77,7 @@ const CreateCommentComponent: React.FC<Props> = (props: Props) => {
           <Button
             variant="contained"
             endIcon={<SendIcon />}
-            onClick={handleSend}
+            onClick={(e) => handleSend(e)}
           >
             Send
           </Button>
