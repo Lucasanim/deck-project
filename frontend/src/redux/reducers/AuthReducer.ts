@@ -4,6 +4,7 @@ import { loginRequest, refreshTokenRequest, registerRequest } from '../../servic
 import Token from '../../models/user/Token';
 import User from '../../models/user/User';
 import { store } from '../store/Store';
+import { getUserDetails } from '../../services/user/UserService';
 
 export interface AuthState {
   token: Token | null,
@@ -21,10 +22,10 @@ export const login = (userData: AuthDetails) => {
     try {
       const response = await loginRequest(userData);
   
-      if (response.status != 200) {
-        throw new Error('Invalid credentials');
-      }
-  
+      const tokenData: Token = response.data;
+      const userResponse = await getUserDetails(tokenData.userId);
+
+      dispatch(requestUserDetails(userResponse.data));
       return dispatch(loginSuccess(response.data));
     } catch (error) {
       return error;
@@ -37,10 +38,10 @@ export const register =  (userData: AuthDetails) => {
     try {
       const response = await registerRequest(userData);
   
-      if (response.status != 200) {
-        throw new Error('Error trying to register user');
-      }
-  
+      const tokenData: Token = response.data;
+      const userResponse = await getUserDetails(tokenData.userId);
+
+      dispatch(requestUserDetails(userResponse.data));
       return dispatch(loginSuccess(response.data));
     } catch (error) {
       return error;
@@ -53,10 +54,6 @@ export const refreshToken =  (tokenData: Token | null) => {
     try {
       if (!tokenData) return dispatch(logoutSuccess())
       const response = await refreshTokenRequest(tokenData);
-  
-      if (response.status != 200) {
-        throw new Error('Error trying to register user');
-      }
   
       return dispatch(loginSuccess(response.data));
     } catch (error) {
@@ -80,6 +77,10 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    requestUserDetails: (state, action) => {
+      state.token = action.payload;
+      return state;
+    },
     loginSuccess: (state, action) => {
       state.token = action.payload;
       return state;
@@ -90,6 +91,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginSuccess, logoutSuccess } = authSlice.actions;
+export const { loginSuccess, logoutSuccess, requestUserDetails } = authSlice.actions;
 
 export default authSlice.reducer;
