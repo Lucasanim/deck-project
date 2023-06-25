@@ -21,12 +21,12 @@ export const login = (userData: AuthDetails) => {
   return async (dispatch: Dispatch) => {
     try {
       const response = await loginRequest(userData);
+      await dispatch(loginSuccess(response.data));
   
       const tokenData: Token = response.data;
       const userResponse = await getUserDetails(tokenData.userId);
 
-      dispatch(requestUserDetails(userResponse.data));
-      return dispatch(loginSuccess(response.data));
+      return dispatch(requestUserDetails(userResponse.data));
     } catch (error) {
       return error;
     }
@@ -37,12 +37,12 @@ export const register =  (userData: AuthDetails) => {
   return async (dispatch: Dispatch) => {
     try {
       const response = await registerRequest(userData);
+      await dispatch(loginSuccess(response.data));
   
       const tokenData: Token = response.data;
       const userResponse = await getUserDetails(tokenData.userId);
 
-      dispatch(requestUserDetails(userResponse.data));
-      return dispatch(loginSuccess(response.data));
+      return dispatch(requestUserDetails(userResponse.data));
     } catch (error) {
       return error;
     }
