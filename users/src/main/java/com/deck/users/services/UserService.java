@@ -1,5 +1,6 @@
 package com.deck.users.services;
 
+import com.deck.users.dto.UserDTO;
 import com.deck.users.models.User;
 import org.springframework.security.provisioning.UserDetailsManager;
 
@@ -12,5 +13,7 @@ public interface UserService extends UserDetailsManager {
     Optional<User> findByEmail(String email);
     List<User> getUsersByIds(Iterable<Long> ids);
     User save(User user);
+    UserDTO save(UserDTO user);
+    UserDTO updateUser(UserDTO user, Long userId);
     void delete(Long id);
 }

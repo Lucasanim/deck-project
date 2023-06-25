@@ -1,14 +1,20 @@
 package com.deck.users.services;
 
+import com.deck.users.dto.UserDTO;
+import com.deck.users.exception.EmailAlreadyInUseException;
 import com.deck.users.models.User;
 import com.deck.users.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +59,28 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
         return repository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public UserDTO save(UserDTO user) {
+        return UserDTO.from(save(User.from(user)));
+    }
+
+    @Override
+    @Transactional
+    public UserDTO updateUser(UserDTO user, Long userId) {
+        Optional<User> optionalUser = findById(userId);
+        if (optionalUser.isPresent()) {
+            User queriedUser = optionalUser.get();
+            if (!queriedUser.getEmail().equalsIgnoreCase(user.getEmail()) && userExists(user.getEmail())) {
+                throw new EmailAlreadyInUseException();
+            }
+            queriedUser.setEmail(user.getEmail());
+            queriedUser.setPassword(user.getPassword());
+            return UserDTO.from(save(queriedUser));
+        }
+        throw new EntityNotFoundException();
     }
 
     @Override

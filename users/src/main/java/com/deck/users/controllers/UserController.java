@@ -1,6 +1,8 @@
 package com.deck.users.controllers;
 
 import com.deck.users.dto.PublicUserDTO;
+import com.deck.users.dto.UserDTO;
+import com.deck.users.exception.EmailAlreadyInUseException;
 import com.deck.users.models.User;
 import com.deck.users.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,37 +31,34 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult bindingResult) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return this.getValidationErrorResponse(bindingResult);
         }
-        if (this.userService.findByEmail(user.getEmail()).isPresent()) {
+        if (this.userService.userExists(user.getEmail())) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "The email provided is already taken"));
         }
-        User createdUser = this.userService.save(user);
+        UserDTO createdUser = this.userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody User user, BindingResult bindingResult, @PathVariable("userId") Long userId) {
+    @PutMapping
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserDTO user, BindingResult bindingResult, @RequestHeader Long userId) {
         if (bindingResult.hasErrors()) {
             return this.getValidationErrorResponse(bindingResult);
         }
-        Optional<User> optionalUser = this.userService.findById(userId);
-        if (optionalUser.isPresent()) {
-            User queriedUser = optionalUser.get();
-            if (!queriedUser.getEmail().equalsIgnoreCase(user.getEmail()) && this.userService.findByEmail(user.getEmail()).isPresent()) {
-                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "The email provided is already taken"));
-            }
-            queriedUser.setEmail(user.getEmail());
-            queriedUser.setPassword(user.getPassword());
-            return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.save(queriedUser));
+        try {
+            UserDTO userDTO = userService.updateUser(user, userId);
+            return ResponseEntity.status(HttpStatus.OK).body(userDTO);
+        } catch (EmailAlreadyInUseException e) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "The email provided is already taken"));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable("userId") Long userId) {
+    @DeleteMapping
+    public ResponseEntity<?> deleteUser(@RequestHeader Long userId) {
         Optional<User> optionalUser = this.userService.findById(userId);
         if (optionalUser.isPresent()) {
             this.userService.delete(userId);
