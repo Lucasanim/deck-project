@@ -3,7 +3,6 @@ import AuthDetails from '../../models/user/AuthDetails';
 import { loginRequest, refreshTokenRequest, registerRequest } from '../../services/authentication/AuthenticationService';
 import Token from '../../models/user/Token';
 import User from '../../models/user/User';
-import { store } from '../store/Store';
 import { getUserDetails } from '../../services/user/UserService';
 
 export interface AuthState {

@@ -10,10 +10,18 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import ProfileMenu from "./ProfileMenu";
 import NavBarSearch from "../SearchInput";
 import { useNavigate } from "react-router-dom";
-import { ArrowBackIosNew } from "@mui/icons-material";
+import { ArrowBackIosNew, DarkMode } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { changeTheme } from "../../redux/reducers/SessionReducer";
 
 const NavBar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleChangeTheme = async () => {
+    dispatch(changeTheme());
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }} margin={{ xs: "0 0 20px 0" }}>
       <AppBar position="static">
@@ -39,6 +47,14 @@ const NavBar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <IconButton
+              size="large"
+              aria-label="show 4 new mails"
+              color="inherit"
+              onClick={handleChangeTheme}
+            >
+              <DarkMode />
+            </IconButton>
             <IconButton
               size="large"
               aria-label="show 4 new mails"

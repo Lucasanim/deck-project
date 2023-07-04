@@ -57,7 +57,7 @@ const SearchInput: React.FC<Props> = (props: Props) => {
 
   return (
     <>
-      <Search>
+      <Search style={{ margin: 0 }}>
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>
