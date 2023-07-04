@@ -4,6 +4,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/reducers/AuthReducer";
 import { useNavigate } from "react-router-dom";
+import { NavigationRoutes } from "../../router/NavigationRoutes";
 
 const ProfileMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -23,7 +24,7 @@ const ProfileMenu = () => {
   const handleLogOut = () => {
     dispatch(logout());
     handleMenuClose();
-    navigate("/authentication");
+    navigate(NavigationRoutes.PUBLIC + NavigationRoutes.AUTHENTICATION);
   };
 
   return (
