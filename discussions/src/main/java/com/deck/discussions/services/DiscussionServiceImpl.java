@@ -50,8 +50,9 @@ public class DiscussionServiceImpl implements DiscussionService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Discussion> findByTitle(String title) {
-        return repository.findByTitle(title);
+    public List<DiscussionDTO> searchByTitle(String inputText){
+        List<Discussion> discussions = repository.findByTitleContaining(inputText);
+        return discussions.stream().map(DiscussionDTO::from).toList();
     }
 
     @Override

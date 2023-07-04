@@ -8,7 +8,7 @@ import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ProfileMenu from "./ProfileMenu";
-import NavBarSearch from "./NavBarSearch";
+import NavBarSearch from "../SearchInput";
 import { useNavigate } from "react-router-dom";
 import { ArrowBackIosNew } from "@mui/icons-material";
 
@@ -19,14 +19,14 @@ const NavBar = () => {
       <AppBar position="static">
         <Toolbar>
           <IconButton
-              className="mr-5"
-              size="large"
-              aria-label="go back"
-              color="inherit"
-              onClick={() => navigate(-1)}
-            >
-              <ArrowBackIosNew fontSize="small" />
-            </IconButton>
+            className="mr-5"
+            size="large"
+            aria-label="go back"
+            color="inherit"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowBackIosNew fontSize="small" />
+          </IconButton>
           <Typography
             style={{ cursor: "pointer", paddingLeft: 10 }}
             variant="h6"
@@ -37,7 +37,6 @@ const NavBar = () => {
           >
             Deck
           </Typography>
-          <NavBarSearch />
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton

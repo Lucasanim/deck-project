@@ -1,30 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { fetchDiscussions } from "../../services/discussions/DiscussionsService";
+import {
+  fetchDiscussions,
+  searchByTitle,
+} from "../../services/discussions/DiscussionsService";
 import Discussion from "../../models/discussions/Discussion";
-import GridList from "../GridList/GridList";
-import DiscussionCard from "./DiscussionCard";
 import "./style/top-discussions-list.css";
-import { useNavigate } from "react-router-dom";
 import { Add } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import CreateDiscussionModal from "./CreateDiscussionModal";
+import DiscussionsListComponent from "./DiscussionsListComponent";
+import SearchInput from "../SearchInput";
 
 const TopDiscussionsList: React.FC = () => {
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
+  const [topDiscussions, setTopDiscussions] = useState<Discussion[]>([]);
   const [openModal, setOpenModal] = useState(false);
-  const navigate = useNavigate();
 
   const getDiscussions = async () => {
     try {
       const discussions = await fetchDiscussions();
       setDiscussions(discussions.data);
+      setTopDiscussions(discussions.data);
     } catch (e) {
       console.log(e);
     }
   };
 
-  const handleDiscussionClick = (id: string | number) => {
-    navigate("/app/discussion/" + id);
+  const handleInputChange = async (input: string) => {
+    try {
+      if (input) {
+        const discussions = await searchByTitle(input);
+        setDiscussions(discussions.data);
+      } else {
+        setDiscussions(topDiscussions);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -34,7 +46,8 @@ const TopDiscussionsList: React.FC = () => {
   return (
     <div className="top-discussions-list">
       <div className="top-discussions-list-container">
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-between mb-4">
+          <SearchInput handleInputChange={handleInputChange} />
           <Button
             variant="contained"
             endIcon={<Add />}
@@ -43,17 +56,7 @@ const TopDiscussionsList: React.FC = () => {
             New
           </Button>
         </div>
-        <GridList
-          elements={discussions.map((discussion, index) => (
-            <DiscussionCard
-              onClick={handleDiscussionClick}
-              key={index}
-              title={discussion.title}
-              body={discussion.body}
-              id={discussion.id}
-            />
-          ))}
-        />
+        <DiscussionsListComponent discussions={discussions} />
       </div>
       <CreateDiscussionModal
         open={openModal}

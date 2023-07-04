@@ -12,6 +12,10 @@ export const fetchDiscussionById = (id: string) => {
     return instance.get<DiscussionDetail>(`/${id}`)
 }
 
+export const searchByTitle = (input: string) => {
+    return instance.get<Discussion[]>(`/search?input=${input}`)
+}
+
 export const createDiscussion = (discussion: Discussion) => {
     return instance.post<Discussion>("/", discussion)
 }

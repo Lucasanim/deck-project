@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
@@ -43,7 +43,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const NavBarSearch = () => {
+interface Props {
+  handleInputChange: (input: string) => void;
+}
+
+const SearchInput: React.FC<Props> = (props: Props) => {
+  const [searchInput, setSearchInput] = useState<string>("");
+
+  const handleChange = (input: string) => {
+    setSearchInput(input);
+    props.handleInputChange(input);
+  };
+
   return (
     <>
       <Search>
@@ -53,10 +64,12 @@ const NavBarSearch = () => {
         <StyledInputBase
           placeholder="Search…"
           inputProps={{ "aria-label": "search" }}
+          value={searchInput}
+          onChange={(e) => handleChange(e.target.value)}
         />
       </Search>
     </>
   );
 };
 
-export default NavBarSearch;
+export default SearchInput;

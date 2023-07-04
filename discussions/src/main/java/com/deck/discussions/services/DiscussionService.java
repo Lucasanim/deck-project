@@ -11,7 +11,7 @@ public interface DiscussionService {
     List<Discussion> findAll();
     Optional<Discussion> findById(Long id);
     Optional<DiscussionDetailDTO> getDiscussionDetail(Long id, String authenticationHeader);
-    List<Discussion> findByTitle(String title);
+    List<DiscussionDTO> searchByTitle(String inputText);
     List<Discussion> findByIds(Iterable<Long> ids);
     List<Discussion> findByCreatorId(Long creatorId);
     Discussion save(Discussion discussion);

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/discussion")
@@ -37,6 +36,11 @@ public class DiscussionController {
     public ResponseEntity<DiscussionDetailDTO> getDiscussionById(@RequestHeader("Authorization") String accessToken, @PathVariable("discussionId") Long id) {
         Optional<DiscussionDetailDTO> optionalDiscussion = this.discussionService.getDiscussionDetail(id, accessToken);
         return optionalDiscussion.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<DiscussionDTO>> searchDiscussions(@RequestParam("input") String inputText) {
+        return ResponseEntity.ok(this.discussionService.searchByTitle(inputText));
     }
 
     @PostMapping
