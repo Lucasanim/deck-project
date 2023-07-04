@@ -30,7 +30,7 @@ public class DiscussionController {
     @GetMapping
     public ResponseEntity<List<DiscussionDTO>> getDiscussions() {
         List<Discussion> discussions = this.discussionService.findAll();
-        return ResponseEntity.ok(discussions.stream().map(DiscussionDTO::from).collect(Collectors.toList()));
+        return ResponseEntity.ok(discussions.stream().map(DiscussionDTO::from).toList());
     }
 
     @GetMapping("/{discussionId}")

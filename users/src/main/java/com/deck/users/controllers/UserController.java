@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -69,7 +68,7 @@ public class UserController {
 
     @PostMapping("/users-by-id")
     public ResponseEntity<List<PublicUserDTO>> getUsersByIds(@RequestBody List<Long> usersIds) {
-        return ResponseEntity.ok(this.userService.getUsersByIds(usersIds).stream().map(PublicUserDTO::from).collect(Collectors.toList()));
+        return ResponseEntity.ok(this.userService.getUsersByIds(usersIds).stream().map(PublicUserDTO::from).toList());
     }
     private ResponseEntity<Map<String, String>> getValidationErrorResponse(BindingResult bindingResult) {
         Map<String, String> errors = new HashMap<>();
