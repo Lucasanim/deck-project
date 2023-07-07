@@ -25,3 +25,28 @@ body {
   min-height: 100vh;
   justify-content: center;
 }
+
+/* Scrollbar CSS */
+/* Firefox */
+* {
+  scrollbar-width: 7px;
+  scrollbar-color: #808080 transparent;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 7px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #808080;
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-corner {
+  background-color: transparent;
+}

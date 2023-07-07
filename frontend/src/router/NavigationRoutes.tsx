@@ -4,4 +4,5 @@ export enum NavigationRoutes {
   AUTHENTICATION = "/authentication",
   HOME = "/home",
   DISCUSSION = "/discussion",
+  CHAT = "/chat",
 }

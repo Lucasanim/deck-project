@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowBackIosNew, DarkMode } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { changeTheme } from "../../redux/reducers/SessionReducer";
+import { NavigationRoutes } from "../../router/NavigationRoutes";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -59,6 +60,9 @@ const NavBar = () => {
               size="large"
               aria-label="show 4 new mails"
               color="inherit"
+              onClick={() =>
+                navigate(NavigationRoutes.APP + NavigationRoutes.CHAT)
+              }
             >
               <Badge badgeContent={4} color="error">
                 <MailIcon />
