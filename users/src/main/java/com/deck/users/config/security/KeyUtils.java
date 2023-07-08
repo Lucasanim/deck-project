@@ -17,6 +17,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
+import java.util.Base64;
 
 @Component
 public class KeyUtils {
@@ -64,11 +65,11 @@ public class KeyUtils {
             try {
                 keyFactory = KeyFactory.getInstance("RSA");
 
-                byte[] publicKeyBytes = Files.readAllBytes(publicKeyFile.toPath());
+                byte[] publicKeyBytes = Base64.getDecoder().decode(Files.readAllBytes(publicKeyFile.toPath()));
                 EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
                 PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
 
-                byte[] privateKeyBytes = Files.readAllBytes(privateKeyFile.toPath());
+                byte[] privateKeyBytes = Base64.getDecoder().decode(Files.readAllBytes(privateKeyFile.toPath()));
                 PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
                 PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
 
@@ -91,12 +92,12 @@ public class KeyUtils {
                 keyPair = keyPairGenerator.generateKeyPair();
                 try(FileOutputStream fos = new FileOutputStream((publicKeyFile))) {
                     X509EncodedKeySpec keySpec = new X509EncodedKeySpec((keyPair.getPublic().getEncoded()));
-                    fos.write(keySpec.getEncoded());
+                    fos.write(Base64.getEncoder().encodeToString(keySpec.getEncoded()).getBytes());
                 }
 
                 try(FileOutputStream fos = new FileOutputStream((privateKeyFile))) {
                     PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec((keyPair.getPrivate().getEncoded()));
-                    fos.write(keySpec.getEncoded());
+                    fos.write(Base64.getEncoder().encodeToString(keySpec.getEncoded()).getBytes());
                 }
             } catch (NoSuchAlgorithmException | IOException e) {
                 throw new RuntimeException(e);

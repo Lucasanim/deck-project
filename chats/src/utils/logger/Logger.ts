@@ -1,4 +1,4 @@
-import {createLogger, format} from 'winston';
+import {createLogger, format, transports} from 'winston';
 
 export const logger = createLogger({
     format: format.combine(
@@ -9,5 +9,13 @@ export const logger = createLogger({
         format.splat(),
         format.json()
     ),
+    transports: [
+        new transports.Console({
+            "format": format.combine(
+              format.colorize(),
+              format.printf(info => `[${info.timestamp}] ${info.level}: ${info.message}`)
+            )
+          })
+    ],
     defaultMeta: { service: 'chats' }
 });
