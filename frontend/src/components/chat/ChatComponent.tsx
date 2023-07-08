@@ -6,7 +6,7 @@ import useSocket from "../../hooks/websockets/useSocket.hook";
 
 const ChatComponent: React.FC = () => {
   const handleSendMessage = (text: string) => {};
-  const { socket } = useSocket(import.meta.env.VITE_SOCKETS_BASE_URL, "/123");
+  const { socket } = useSocket(import.meta.env.VITE_SOCKETS_BASE_URL);
 
   return (
     <Card className="w-9/12 h-full flex flex-col">

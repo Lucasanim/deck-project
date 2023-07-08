@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useMemo } from "react";
 import io from "socket.io-client";
 
-const useSocket = (url: string, path?: string) => {
+const useSocket = (url: string) => {
   const [online, setOnline] = useState(false);
 
   const socket = useMemo(
     () =>
       io(url, {
         transports: ["websocket"],
-        path: path || "",
       }),
-    [url, path]
+    [url]
   );
 
   useEffect(() => {
