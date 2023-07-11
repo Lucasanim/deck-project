@@ -5,6 +5,7 @@ import com.deck.users.dto.UserDTO;
 import com.deck.users.exception.EmailAlreadyInUseException;
 import com.deck.users.models.User;
 import com.deck.users.services.UserService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,11 @@ public class UserController {
     public ResponseEntity<PublicUserDTO> getUserById(@PathVariable("userId") Long id) {
         Optional<User> optionalUser = this.userService.findById(id);
         return optionalUser.map(user -> ResponseEntity.ok(PublicUserDTO.from(user))).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/search-by-username")
+    public ResponseEntity<List<PublicUserDTO>> searchUsersByUsername(@RequestParam String username, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "0") int pageNumber) {
+        return ResponseEntity.ok(this.userService.searchUsersByUsername(username, PageRequest.of(pageNumber, pageSize)));
     }
 
     @PostMapping

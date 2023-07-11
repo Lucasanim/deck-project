@@ -1,10 +1,12 @@
 package com.deck.users.services;
 
+import com.deck.users.dto.PublicUserDTO;
 import com.deck.users.dto.UserDTO;
 import com.deck.users.exception.EmailAlreadyInUseException;
 import com.deck.users.models.User;
 import com.deck.users.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -52,6 +54,13 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public List<User> getUsersByIds(Iterable<Long> ids) {
         return (List<User>) repository.findAllById(ids);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PublicUserDTO> searchUsersByUsername(String username, Pageable pageable) {
+        List<User> users = repository.findByUsernameContaining(username, pageable);
+        return users.stream().map(PublicUserDTO::from).toList();
     }
 
     @Override

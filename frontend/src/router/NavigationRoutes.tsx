@@ -5,4 +5,6 @@ export enum NavigationRoutes {
   HOME = "/home",
   DISCUSSION = "/discussion",
   CHAT = "/chat",
+  SEARCH_USER = "/search-user",
+  PROFILE = "/profile",
 }

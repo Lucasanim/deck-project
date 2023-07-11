@@ -4,6 +4,8 @@ import NavBar from "../components/navBar/NavBar";
 import DiscussionDetailPage from "../components/discussions/DiscussionDetailPage";
 import { NavigationRoutes } from "./NavigationRoutes";
 import ChatPage from "../components/chat/ChatPage";
+import SearchUsersPage from "../components/users/SearchUsersPage";
+import ProfilePage from "../components/users/ProfilePage";
 
 const PrivateRouter = () => {
   return (
@@ -20,6 +22,14 @@ const PrivateRouter = () => {
             element={<DiscussionDetailPage />}
           />
           <Route path={NavigationRoutes.CHAT} element={<ChatPage />} />
+          <Route
+            path={NavigationRoutes.SEARCH_USER}
+            element={<SearchUsersPage />}
+          />
+          <Route
+            path={NavigationRoutes.PROFILE + "/:id"}
+            element={<ProfilePage />}
+          />
           <Route path="*" element={<Navigate to="home" replace />} />
         </Routes>
       </div>

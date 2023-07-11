@@ -1,6 +1,8 @@
 import SocketIo, { Server, Socket } from "socket.io";
 import http from "http";
 import { logger } from "../utils/logger/Logger";
+import Message from "../models/Message";
+import ChatService from "../service/ChatService";
 
 class ChatHandler {
   private socket: Server;
@@ -34,8 +36,8 @@ class ChatHandler {
       logger.error("Error on websocket connection: " + JSON.stringify(error));
       this.handleConnectionClose(socket.id);
     });
-    socket.on("message", (message) => {
-      this.handleMessageEvent();
+    socket.on("message", (message: Message) => {
+      this.handleMessageEvent(message);
     });
     socket.on("close", () => {
       this.handleConnectionClose(socket.id);
@@ -43,7 +45,7 @@ class ChatHandler {
     this.clientsMap.set(socket.id, socket);
   }
 
-  private handleMessageEvent() {}
+  private handleMessageEvent(message: Message) {}
 
   private handleConnectionClose(id: string) {
     if (this.clientsMap && this.clientsMap.has(id)) {
