@@ -1,3 +1,5 @@
+chats:
+  url: http://localhost:3000
 server:
   port: 8090
 spring:
@@ -16,6 +18,12 @@ spring:
           uri: lb://discussions
           predicates:
             - Path=/api/discussions/**
+          filters:
+            - StripPrefix=2
+        - id: chats
+          uri: ${chats.url}
+          predicates:
+            - Path=/api/chats/**
           filters:
             - StripPrefix=2
         - id: registry

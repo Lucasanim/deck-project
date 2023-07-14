@@ -2,14 +2,19 @@ import React from "react";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import ChatListItem from "./ChatListItem";
+import ChatModel from "../../models/chats/ChatModel";
 
-const ChatsList: React.FC = () => {
+interface Props {
+  chats: ChatModel[];
+}
+
+const ChatsList: React.FC<Props> = (props: Props) => {
   return (
     <List className="h-full overflow-scroll w-3/12">
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((number, index) => (
+      {props.chats?.map((chat, index) => (
         <>
-          <ChatListItem key={index} />
-          {/* <Divider key={index + "d"} variant="inset" component="li" /> */}
+          <ChatListItem key={index} chat={chat} />
+          <Divider key={index + "d"} variant="inset" component="li" />
         </>
       ))}
     </List>

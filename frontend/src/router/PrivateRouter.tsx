@@ -22,6 +22,7 @@ const PrivateRouter = () => {
             element={<DiscussionDetailPage />}
           />
           <Route path={NavigationRoutes.CHAT} element={<ChatPage />} />
+          <Route path={NavigationRoutes.CHAT + "/:id"} element={<ChatPage />} />
           <Route
             path={NavigationRoutes.SEARCH_USER}
             element={<SearchUsersPage />}

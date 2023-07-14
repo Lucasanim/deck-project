@@ -8,6 +8,7 @@ import User from "../../models/user/User";
 import { Add, Send } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { StoreData } from "../../redux/store/Store";
+import { createChat } from "../../services/chat/ChatService";
 
 interface Props {
   user: User;
@@ -15,6 +16,14 @@ interface Props {
 
 const ProfileComponent: React.FC<Props> = (props: Props) => {
   const user = useSelector((store: StoreData) => store.auth.user);
+
+  const handleMessage = () => {
+    try {
+      const response = createChat(props.user.id);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <Card sx={{ display: "flex" }}>
@@ -39,7 +48,7 @@ const ProfileComponent: React.FC<Props> = (props: Props) => {
               <Button>
                 <Add className="mr-2" sx={{ fontSize: 20 }} /> Follow
               </Button>
-              <Button>
+              <Button onClick={handleMessage}>
                 message <Send className="ml-2" sx={{ fontSize: 20 }} />
               </Button>
             </Box>

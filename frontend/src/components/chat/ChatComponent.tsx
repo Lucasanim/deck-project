@@ -4,7 +4,9 @@ import MessageInput from "./message/MessageInput";
 import MessageComponent from "./message/MessageComponent";
 import useSocket from "../../hooks/websockets/useSocket.hook";
 
-const ChatComponent: React.FC = () => {
+interface Props {}
+
+const ChatComponent: React.FC<Props> = (props: Props) => {
   const handleSendMessage = (text: string) => {};
   const { socket } = useSocket(import.meta.env.VITE_SOCKETS_BASE_URL);
 
