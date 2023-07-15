@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useMemo } from "react";
 import io from "socket.io-client";
 
-const useSocket = (url: string) => {
+const useSocket = (url?: string) => {
   const [online, setOnline] = useState(false);
 
   const socket = useMemo(
     () =>
-      io(url, {
+      io(url || import.meta.env.VITE_SOCKETS_BASE_URL, {
         transports: ["websocket"],
       }),
     [url]

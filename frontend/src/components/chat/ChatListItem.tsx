@@ -5,11 +5,16 @@ import ChatModel from "../../models/chats/ChatModel";
 
 interface Props {
   chat: ChatModel;
+  onClick: (chat: ChatModel) => void;
 }
 
 const ChatListItem: React.FC<Props> = (props: Props) => {
   return (
-    <ListItem alignItems="flex-start" className="cursor-pointer">
+    <ListItem
+      alignItems="flex-start"
+      className="cursor-pointer"
+      onClick={() => props.onClick(props.chat)}
+    >
       <ListItemAvatar>
         <Avatar className="m-5" sx={{ bgcolor: red[500] }} aria-label="recipe">
           {props.chat.memberData?.username.slice(0, 2)}

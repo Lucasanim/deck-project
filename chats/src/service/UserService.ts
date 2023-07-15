@@ -12,11 +12,9 @@ class UserService {
     authToken: string
   ): Promise<User[]> {
     try {
-      logger.info("Users token: " + authToken);
       const response = await this.instance.post<User[]>("/users-by-id", ids, {
         headers: { Authorization: "Bearer " + authToken },
       });
-      logger.info("Users response: " + response.data + response.status);
       return response.data;
     } catch (e) {
       logger.error("Error retrieving users details ", e);

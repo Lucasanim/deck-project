@@ -3,6 +3,8 @@ import http from "http";
 import { logger } from "../utils/logger/Logger";
 import Message from "../models/Message";
 import ChatService from "../service/ChatService";
+import AuthMiddleware from "../middleware/AuthMiddleware";
+import SocketsAuthMiddleware from "../middleware/SocketsAuthMiddleware";
 
 class ChatHandler {
   private socket: Server;
@@ -24,6 +26,7 @@ class ChatHandler {
   public initializeWebSocket(server: http.Server) {
     try {
       this.socket = new SocketIo.Server(server);
+      this.socket.use(SocketsAuthMiddleware);
       this.socket.on("connection", this.initializeConnections.bind(this));
     } catch (e) {
       logger.error("Error creating socket connection", e);

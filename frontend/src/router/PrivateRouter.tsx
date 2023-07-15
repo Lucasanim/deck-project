@@ -6,8 +6,17 @@ import { NavigationRoutes } from "./NavigationRoutes";
 import ChatPage from "../components/chat/ChatPage";
 import SearchUsersPage from "../components/users/SearchUsersPage";
 import ProfilePage from "../components/users/ProfilePage";
+import { useEffect } from "react";
+import SocketConnection from "../hooks/websockets/SocketConnection";
 
 const PrivateRouter = () => {
+  useEffect(() => {
+    SocketConnection.getInstance();
+    return () => {
+      SocketConnection.disconnect();
+    };
+  }, []);
+
   return (
     <>
       <NavBar />

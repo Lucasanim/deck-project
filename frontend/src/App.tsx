@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import NavBar from "./components/navBar/NavBar";
@@ -8,11 +8,20 @@ import { deckTheme } from "./architecture/theme/deckTheme";
 import { useSelector } from "react-redux";
 import { CssBaseline } from "@mui/material";
 import { StoreData } from "./redux/store/Store";
+import SocketConnection from "./hooks/websockets/SocketConnection";
 
 const App: React.FC = () => {
   const darkMode = useSelector(
     (store: StoreData) => store.session.sessionData.darkMode
   );
+
+  // useEffect(() => {
+  //   console.log("APP");
+  //   return () => {
+  //     SocketConnection.disconnect();
+  //   };
+  // }, []);
+
   return (
     <ThemeProvider theme={deckTheme(darkMode)}>
       <CssBaseline />
